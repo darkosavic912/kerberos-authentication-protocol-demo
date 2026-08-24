@@ -43,7 +43,7 @@ public class KerberosServer {
 
                     // 1. Server receives TGT request
                     String messageClient = in.readUTF();
-                    System.out.println("Client user: " + messageClient);
+                    System.out.println("TGT request received from user: " + messageClient);
                     String passwordActiveDirectory = "topsecret";
 
                     // 1.1 KDC send session key Sa and TGT, all encrypted with inicialised key kA from password hash
@@ -55,12 +55,10 @@ public class KerberosServer {
                     // 1.2. Derive Ka key (first 16 bytes for AES-128)
                     byte[] keyMaterial = Arrays.copyOfRange(passwordHash, 0, 16);
                     SecretKey userKeyKa = new SecretKeySpec(keyMaterial, "AES");
-                    System.out.println("User secret key (Ka): " + Arrays.toString(userKeyKa.getEncoded()));
 
                     // 1.4. Generate Session Key (Sa)
                     byte[] saBytes = new byte[16];
                     new SecureRandom().nextBytes(saBytes);
-                    System.out.println("Session key (Sa) generated for client: " + Arrays.toString(saBytes));
 
                     // 1.5. Encrypt session key Sa
                     byte [] encryptedSa = new AES_cipher().encrypt(userKeyKa,saBytes);
@@ -117,7 +115,6 @@ public class KerberosServer {
                     // 2.3. Extract Session Key (Sa) from decrypted TGT
                     byte[] saFromTgt = Arrays.copyOfRange(decryptedTgtPayload, 0, 16);
                     SecretKey saClientKey = new SecretKeySpec(saFromTgt, "AES");
-                    System.out.println("Session key (Sa) extracted from TGT: " + Arrays.toString(saFromTgt));
 
                     // 2.4. KDC decrypts Authenticator using Session Key (Sa) to verify request freshness
                     byte[] timestampBytes = new AES_cipher().decrypt(saClientKey, authenticatorBytes);

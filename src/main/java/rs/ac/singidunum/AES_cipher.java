@@ -12,7 +12,7 @@ public class AES_cipher {
         byte[] iv = new byte[IV_SIZE];
         secureRandom.nextBytes(iv);
         IvParameterSpec IV = new IvParameterSpec(iv);
-        //E
+
         Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
         c.init(Cipher.ENCRYPT_MODE, key, IV);
         byte[] ciphertext = c.doFinal(plaintext);
@@ -25,7 +25,6 @@ public class AES_cipher {
     }
 
     public byte[] decrypt(SecretKey key, byte[] ivAndCiphertext) throws Exception{
-        //IV
         byte[] iv = new byte[IV_SIZE];
         System.arraycopy(ivAndCiphertext, 0, iv, 0, IV_SIZE);
         IvParameterSpec IV = new IvParameterSpec(iv);

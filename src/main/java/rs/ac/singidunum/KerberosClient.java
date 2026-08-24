@@ -42,7 +42,6 @@ public class KerberosClient {
             // 1.3. Regenerate client secret key (Ka) from password hash (first 16 bytes for AES-128)
             byte[] keyMaterial = Arrays.copyOfRange(passwordHash, 0, 16);
             SecretKey userKeyKa = new SecretKeySpec(keyMaterial, "AES");
-            System.out.println("User secret key (Ka): " + Arrays.toString(userKeyKa.getEncoded()));
 
             // 1.4. Alice receives encrypted payload containing Session Key (Sa) and TGT
             byte[] saTgtEncrypted = Base64.getDecoder().decode(in.readUTF());
@@ -66,7 +65,6 @@ public class KerberosClient {
             // 1.7. Alice decrypt ciphertext and take session key
             byte [] saBytes = new AES_cipher().decrypt(userKeyKa, saEncryptedBytes);
             SecretKey saKey = new SecretKeySpec(saBytes, "AES");
-            System.out.println("Session key (Sa) successfully extracted: " + Arrays.toString(saBytes));
 
             // 1.7. Alice prepares a request to access data (TGT + Requested File Name + Authenticator)
             LocalDateTime now = LocalDateTime.now();
