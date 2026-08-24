@@ -1,11 +1,9 @@
 package rs.ac.singidunum;
 
 import java.security.*;
-import java.util.Arrays;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 
 public class AES_cipher {
     private static final int IV_SIZE = 16;
